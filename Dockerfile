@@ -4,7 +4,7 @@ WORKDIR /src/path/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN yarn add
 
 COPY . .
 
