@@ -66,8 +66,8 @@ bot.command('help', async (ctx) => {
   });
 });
 
-bot.on('message:text', async (ctx) => {
-  await sendFile(ctx)
+bot.on('message:text', (ctx) => {
+  sendFile(ctx)
 });
 
 async function sendFile(ctx){
