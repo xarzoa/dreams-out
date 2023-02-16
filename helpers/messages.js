@@ -4,6 +4,8 @@ function start(user, admin, version){
 
 Me, the bot can turn your <b>Idea</b> to a <b>Picture</b>.
 
+Just send me your prompt/dream as text.
+
 Use /help for more.
 
 We appreciate feature requests and bug reports. Send em to @${admin}.
@@ -37,7 +39,7 @@ You can contact @${admin} for credit refill.
   return message
 }
 
-function help(){
+function help(support){
   const message = `
 <b>About commands</b>
 
@@ -52,8 +54,9 @@ function help(){
 - There's no option to buy credits.
 - We added credits to prevent abusing <b>free service</b>.
 - Don't spam. (Result will be permenent ban.)
-`
 
+For more @${support}
+`
   return message
 }
 

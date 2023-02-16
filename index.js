@@ -64,7 +64,8 @@ bot.command('secret', async (ctx) => {
 });
 
 bot.command('help', async (ctx) => {
-  ctx.reply(help(), {
+  const botSettings = await getBotSettings();
+  ctx.reply(help(botSettings.support), {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
   });
