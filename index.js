@@ -106,4 +106,7 @@ bot.on('message:text', async (ctx) => {
   );
 });
 
+process.once("SIGINT", () => bot.stop());
+process.once("SIGTERM", () => bot.stop());
+
 bot.start();
