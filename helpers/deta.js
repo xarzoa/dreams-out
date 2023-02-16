@@ -26,8 +26,8 @@ async function getUser(id) {
   return data;
 }
 
-async function addPrompt(prompt, id, charged) {
-  await users.put({ prompt: prompt, charged: charged }, `${id}`);
+async function addPrompt(prompt, imgPath, charged,id) {
+  await prompts.put({ prompt: prompt, img: imgPath, charged: charged }, `${id}`);
 }
 
 async function getPrompts(id) {
@@ -36,7 +36,8 @@ async function getPrompts(id) {
 }
 
 async function addImage(image,path) {
-  await images.put(image, { path: path });
+  const data = await images.put(image, { path: path });
+  return data
 }
 
 async function updateBotSettings(endPoint, charge) {

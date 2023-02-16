@@ -45,7 +45,7 @@ bot.command('me', async (ctx) => {
 
 bot.command('refill', async (ctx) => {
   const botSettings = await getBotSettings();
-  ctx.reply(refill(botSettings.charge), {
+  ctx.reply(refill(botSettings.charge, botSettings.admin), {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
   });
@@ -67,35 +67,37 @@ bot.command('help', async (ctx) => {
 });
 
 bot.on('message:text', (ctx) => {
-  sendFile(ctx)
+  sendFile(ctx);
 });
 
-async function sendFile(ctx){
+async function sendFile(ctx) {
   const status = await ctx.reply('Generating...', {
     reply_to_message_id: ctx.message.message_id,
   });
   const botSettings = await getBotSettings();
   const user = await getUser(ctx.msg.from.id);
-  if (user.credits > 0) {
+  if (!user) {
+    await createUser(ctx.msg.from.first_name, ctx.msg.from.id, 30);
+  } else if (user.credits >= botSettings.charge) {
     try {
       await generate(ctx.msg.text, botSettings.endPoints);
-      bot.api.sendChatAction(ctx.msg.chat.id, 'upload_photo')
+      bot.api.sendChatAction(ctx.msg.chat.id, 'upload_photo');
       bot.api.editMessageText(status.chat.id, status.message_id, 'Generated.');
       await ctx.replyWithPhoto(new InputFile(`./images/${ctx.msg.text}.jpeg`), {
-        reply_to_message_id: ctx.message.message_id,
+        reply_to_message_id: ctx.msg.message_id,
       });
-      bot.api.deleteMessage(status.chat.id, status.message_id);
       await updateUser(ctx.msg.from.id, botSettings.charge);
-      await addImage(
-        `./images/${ctx.msg.text}.jpeg`,
+      const file = await addImage(
+        `./${ctx.msg.from.id}/${ctx.msg.text}.jpeg`,
         `./images/${ctx.msg.text}.jpeg`
       );
+      await addPrompt(ctx.msg.text, file, botSettings.charge, ctx.msg.from.id);
       deleteFile(`./images/${ctx.msg.text}.jpeg`);
     } catch (e) {
       bot.api.editMessageText(
         status.chat.id,
         status.message_id,
-        `${e.message}. Try again.`,
+        `${e.message}. Try again.`
       );
     }
     return;
@@ -110,7 +112,7 @@ async function sendFile(ctx){
   );
 }
 
-process.once("SIGINT", () => bot.stop());
-process.once("SIGTERM", () => bot.stop());
+process.once('SIGINT', () => bot.stop());
+process.once('SIGTERM', () => bot.stop());
 
 bot.start();

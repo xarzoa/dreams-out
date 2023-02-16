@@ -2,7 +2,9 @@ function start(user){
 
   const message = `Welcome, <b>${user}</b>!
 
-Me, the bot can turn your <b>Idea</b> to a <b>Picture.</b>.`
+Me, the bot can turn your <b>Idea</b> to a <b>Picture.</b>.
+
+Use /help for more.`
 
   return message
 }
@@ -11,32 +13,21 @@ function aboutMe(name, credits){
   const message = `
 Hey, <b>${name}</b>!
 
-You got <b>${credits}</b> DT(s).
+You got <b>${credits}</b> credits.
 `
 
   return message
 }
 
-function refill(charge){
+function refill(charge,admin){
   const message = `
-<b>Refill guide</b>
+<b>Refill guide</b>,
 
-You can buy credits or earn them or wait until next month.
-Your choice.
+You can't buy credits rn. Also we don't want to sell them rn. We added them to prevent abusing <b>free service</b>.
 
-30DTs/month - free
-90DTs - 0.99$ - 1.89$
-210DTs - 1.99$ - 4.39$
-660DTs - 6.99$ - 13.99$
+You can contact @${admin} for credit refill.
 
-<code>${charge}DTs = Image</code>
-
-If you can't afford, Just ask.
-
-Pay with <b>TON</b> or <b>Paypal</b>.
-- <b>30 Days refund gurantee</b>.
-
-Contact @MyDreamerBot
+<code>${charge} credit(s) = Image</code>
 `
 
   return message
@@ -48,14 +39,14 @@ function help(){
 
 <code>/start</code> - Start the bot.
 <code>/help</code> - Help with commands and some notes.
-<code>/refill</code> - Refill your DTs
-<code>/me</code> - About you. (Your available DT(s) and ect.)
+<code>/refill</code> - Refill your credits
+<code>/me</code> - About you. (Your available credits and ect.)
 <code>/secret</code> - Your secret. (Keep it or write down somewhere safe. You gonna need it when moving account or restoring account.)
 
 <b>Notes</b>
 
-- DT means Dreamer Tokens. (Prices gonna change when we change the model.)
-- Don't use Emojies. (Cost credits.)
+- There's no option to buy credits.
+- We added credits to prevent abusing <b>free service</b>.
 - Don't spam. (Result will be permenent ban.)
 `
 
