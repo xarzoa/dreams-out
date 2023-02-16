@@ -9,9 +9,9 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - uses: superfly/flyctl-actions/setup-flyctl@master
-        - id: add BOT_TOKEN to .env
+        - id: adding_bot_env
           run: echo BOT_TOKEN=${{ secrets.BOT_TOKEN }} > .env
-        - id: add DETA_KEY to .env
+        - id: adding_deta_env
           run: echo DETA_KEY=${{ secrets.DETA_KEY }} >> .env
         - id: deploy
           run: flyctl deploy --remote-only
