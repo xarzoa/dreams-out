@@ -1,6 +1,13 @@
-const { Bot, InputFile } = require('grammy');
+const { Bot, InputFile, InlineKeyboard } = require('grammy');
 const { config } = require('./helpers/config');
-const { start, aboutMe, refill, help, secret } = require('./helpers/messages');
+const {
+  start,
+  aboutMe,
+  refill,
+  help,
+  secret,
+  newSecret,
+} = require('./helpers/messages');
 const {
   createUser,
   getUser,
@@ -10,6 +17,7 @@ const {
   updateUser,
   updateBotSettings,
   getBotSettings,
+  resetSecret,
 } = require('./helpers/deta');
 const { deleteFile, countSize } = require('./helpers/fileSystem');
 const { generate } = require('./helpers/generate');
@@ -30,44 +38,96 @@ startThings();
 bot.command('start', async (ctx) => {
   const user = await getUser(ctx.msg.from.id);
   const botSettings = await getBotSettings();
+  let keyBoard = new InlineKeyboard()
+    .url('Bug reports', `tg://resolve?domain=${botSettings.admin}`)
+    .url('Help', `tg://resolve?domain=${botSettings.support}`);
+
   if (!user) {
     await createUser(ctx.msg.from.first_name, ctx.msg.from.id, 30);
   }
   ctx.reply(
     start(ctx.msg.from.first_name, botSettings.admin, botSettings.version),
-    { parse_mode: 'HTML' }
+    { parse_mode: 'HTML', reply_markup: keyBoard }
   );
 });
 
+let meKeyboard = new InlineKeyboard().text('Refresh', 'refresh');
+
 bot.command('me', async (ctx) => {
   const user = await getUser(ctx.msg.from.id);
-  ctx.reply(aboutMe(ctx.msg.from.first_name, user.credits), {
+  let meKeyboard = new InlineKeyboard().text('Refresh', 'refresh');
+  ctx.reply(aboutMe(user), {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
+    reply_markup: meKeyboard,
   });
+});
+
+bot.callbackQuery('refresh', async (ctx) => {
+  const user = await getUser(ctx.update.callback_query.from.id);
+  let meKeyboard = new InlineKeyboard().text('Refresh', 'refresh');
+  try {
+    bot.api.editMessageText(
+      ctx.update.callback_query.message.chat.id,
+      ctx.update.callback_query.message.message_id,
+      aboutMe(user),
+      {
+        parse_mode: 'HTML',
+        reply_to_message_id: ctx.update.callback_query.message.message_id,
+        reply_markup: meKeyboard,
+      }
+    );
+  } catch (e) {
+    console.error(e.message);
+  }
 });
 
 bot.command('refill', async (ctx) => {
   const botSettings = await getBotSettings();
+  let keyBoard = new InlineKeyboard().url(
+    'Contact',
+    `tg://resolve?domain=${botSettings.admin}`
+  );
   ctx.reply(refill(botSettings.charge, botSettings.admin), {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
+    reply_markup: keyBoard,
   });
 });
 
 bot.command('secret', async (ctx) => {
-  const user = await getUser(ctx.msg.from.id);
-  ctx.reply(secret(user.secret), {
+  const user = await getUser(ctx.message.from.id);
+  let keyBoard = new InlineKeyboard().text('Reset', 'resetSecret');
+  const msg = ctx.reply(secret(user.secret), {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
+    reply_markup: keyBoard,
   });
+});
+
+bot.callbackQuery('resetSecret', async (ctx) => {
+  const secret = await resetSecret(ctx.update.callback_query.from.id);
+  bot.api.editMessageText(
+    ctx.update.callback_query.message.chat.id,
+    ctx.update.callback_query.message.message_id,
+    newSecret(secret),
+    {
+      parse_mode: 'HTML',
+      reply_to_message_id: ctx.update.callback_query.message.message_id,
+    }
+  );
 });
 
 bot.command('help', async (ctx) => {
   const botSettings = await getBotSettings();
+  let keyBoard = new InlineKeyboard().url(
+    'Contact',
+    `tg://resolve?domain=${botSettings.support}`
+  );
   ctx.reply(help(botSettings.support), {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
+    reply_markup: keyBoard,
   });
 });
 
@@ -91,6 +151,7 @@ async function sendFile(ctx) {
       await ctx.replyWithPhoto(new InputFile(`./images/${ctx.msg.text}.jpeg`), {
         reply_to_message_id: ctx.msg.message_id,
       });
+      bot.api.deleteMessage(status.chat.id, status.message_id);
       await updateUser(ctx.msg.from.id, botSettings.charge);
       const file = await addImage(
         `./${ctx.msg.from.id}/${ctx.msg.text}.jpeg`,

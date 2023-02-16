@@ -21,6 +21,12 @@ async function updateUser(id, charge) {
   await users.update({ credits: users.util.increment(-charge) }, `${id}`);
 }
 
+async function resetSecret(id){
+  const secret = uuid()
+  await users.update( {secret: secret }, `${id}` )
+  return secret
+}
+
 async function getUser(id) {
   const data = await users.get(`${id}`);
   return data;
@@ -73,4 +79,5 @@ module.exports = {
   addImage,
   updateBotSettings,
   getBotSettings,
+  resetSecret
 };

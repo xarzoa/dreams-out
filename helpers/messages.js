@@ -15,11 +15,15 @@ We appreciate feature requests and bug reports. Send em to @${admin}.
   return message
 }
 
-function aboutMe(name, credits){
+function aboutMe(user){
+  const date = new Date();
+  const lastChecked = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   const message = `
-Hey, <b>${name}</b>!
+You got <b>${user.credits}</b> credits.
 
-You got <b>${credits}</b> credits.
+You're ${user.banned ?'' : 'not' } banned.
+
+Last checked at ${lastChecked}
 `
 
   return message
@@ -64,11 +68,22 @@ function secret(secret){
   const message = `
 Your secret is <code>${secret}</code>.
 
-Keep it or write down somewhere safe. You gonna need it when moving account or restoring account.
+Keep it or write it down somewhere safe. You gonna need it when moving account or restoring account.
+`
+  return message
+}
+
+function newSecret(secret){
+  const message = `
+We reset your secret!
+
+New secret is <code>${secret}</code>.
+
+Keep it or write it down somewhere safe.
 `
   return message
 }
 
 module.exports = {
-  start, aboutMe, refill, help, secret
+  start, aboutMe, refill, help, secret, newSecret
 }
