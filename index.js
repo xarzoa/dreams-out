@@ -120,10 +120,9 @@ bot.callbackQuery('resetSecret', async (ctx) => {
 
 bot.command('help', async (ctx) => {
   const botSettings = await getBotSettings();
-  let keyBoard = new InlineKeyboard().url(
-    'Contact',
-    `tg://resolve?domain=${botSettings.support}`
-  );
+  let keyBoard = new InlineKeyboard()
+    .url('Bug reports', `tg://resolve?domain=${botSettings.admin}`)
+    .url('Help', `tg://resolve?domain=${botSettings.support}`);
   ctx.reply(help(botSettings.support), {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,

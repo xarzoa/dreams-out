@@ -7,8 +7,6 @@ Just send me your prompt/dream as text.
 
 Use /help for more.
 
-We appreciate feature requests and bug reports. Send em to @${admin}.
-
 <b>Dreams Out</b> <code>v${version}</code>`;
 
   return message;
@@ -57,8 +55,7 @@ function help(support) {
 - There's no option to buy credits.
 - We added credits to prevent abusing <b>free service</b>.
 - Don't spam. (Result will be permenent ban.)
-
-For more @${support}
+- Best way to support us is reporting bugs and asking for new features.
 `;
   return message;
 }
