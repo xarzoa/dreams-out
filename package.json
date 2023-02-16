@@ -8,6 +8,9 @@
     "openai": "^3.1.0",
     "uuid": "^9.0.0"
   },
+  "engines": {
+    "node": "16.14.0"
+  },
   "name": "dreamer",
   "version": "1.0.0",
   "main": "index.js",
