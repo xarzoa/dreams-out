@@ -1,5 +1,5 @@
 const { Deta } = require('deta');
-const { v4: uuid } = require('uuid')
+const { v4: uuid } = require('uuid');
 const { config } = require('./config');
 
 const deta = Deta(config.detaKey);
@@ -12,7 +12,13 @@ const images = deta.Drive('images');
 
 async function createUser(name, id, credits) {
   await users.put(
-    { name: name, banned: false, credits: credits, paid: false, secret: uuid() },
+    {
+      name: name,
+      banned: false,
+      credits: credits,
+      paid: false,
+      secret: uuid(),
+    },
     `${id}`
   );
 }
@@ -21,10 +27,10 @@ async function updateUser(id, charge) {
   await users.update({ credits: users.util.increment(-charge) }, `${id}`);
 }
 
-async function resetSecret(id){
-  const secret = uuid()
-  await users.update( {secret: secret }, `${id}` )
-  return secret
+async function resetSecret(id) {
+  const secret = uuid();
+  await users.update({ secret: secret }, `${id}`);
+  return secret;
 }
 
 async function getUser(id) {
@@ -32,8 +38,11 @@ async function getUser(id) {
   return data;
 }
 
-async function addPrompt(prompt, imgPath, charged,id) {
-  await prompts.put({ prompt: prompt, img: imgPath, charged: charged }, `${id}`);
+async function addPrompt(prompt, imgPath, charged, id) {
+  await prompts.put(
+    { prompt: prompt, img: imgPath, charged: charged },
+    `${id}`
+  );
 }
 
 async function getPrompts(id) {
@@ -41,9 +50,9 @@ async function getPrompts(id) {
   return items;
 }
 
-async function addImage(image,path) {
+async function addImage(image, path) {
   const data = await images.put(image, { path: path });
-  return data
+  return data;
 }
 
 async function updateBotSettings(endPoint, charge) {
@@ -79,5 +88,5 @@ module.exports = {
   addImage,
   updateBotSettings,
   getBotSettings,
-  resetSecret
+  resetSecret,
 };

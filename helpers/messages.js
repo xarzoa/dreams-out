@@ -1,5 +1,4 @@
-function start(user, admin, version){
-
+function start(user, admin, version) {
   const message = `Welcome, <b>${user}</b>!
 
 Me, the bot can turn your <b>Idea</b> to a <b>Picture</b>.
@@ -10,26 +9,26 @@ Use /help for more.
 
 We appreciate feature requests and bug reports. Send em to @${admin}.
 
-<b>Dreams Out</b> <code>v${version}</code>`
+<b>Dreams Out</b> <code>v${version}</code>`;
 
-  return message
+  return message;
 }
 
-function aboutMe(user){
+function aboutMe(user) {
   const date = new Date();
   const lastChecked = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   const message = `
 You got <b>${user.credits}</b> credits.
 
-You're ${user.banned ?'' : 'not' } banned.
+You're ${user.banned ? '' : 'not'} banned.
 
 Last checked at ${lastChecked}
-`
+`;
 
-  return message
+  return message;
 }
 
-function refill(charge,admin){
+function refill(charge, admin) {
   const message = `
 <b>Refill guide</b>,
 
@@ -38,12 +37,12 @@ You can't buy credits rn. Also we don't want to sell them rn. We added them to p
 You can contact @${admin} for credit refill.
 
 <code>${charge} credit(s) = Image</code>
-`
+`;
 
-  return message
+  return message;
 }
 
-function help(support){
+function help(support) {
   const message = `
 <b>About commands</b>
 
@@ -60,30 +59,35 @@ function help(support){
 - Don't spam. (Result will be permenent ban.)
 
 For more @${support}
-`
-  return message
+`;
+  return message;
 }
 
-function secret(secret){
+function secret(secret) {
   const message = `
 Your secret is <code>${secret}</code>.
 
 Keep it or write it down somewhere safe. You gonna need it when moving account or restoring account.
-`
-  return message
+`;
+  return message;
 }
 
-function newSecret(secret){
+function newSecret(secret) {
   const message = `
 We reset your secret!
 
 New secret is <code>${secret}</code>.
 
 Keep it or write it down somewhere safe.
-`
-  return message
+`;
+  return message;
 }
 
 module.exports = {
-  start, aboutMe, refill, help, secret, newSecret
-}
+  start,
+  aboutMe,
+  refill,
+  help,
+  secret,
+  newSecret,
+};
