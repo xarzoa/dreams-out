@@ -1,10 +1,14 @@
-function start(user){
+function start(user, admin, version){
 
   const message = `Welcome, <b>${user}</b>!
 
 Me, the bot can turn your <b>Idea</b> to a <b>Picture.</b>.
 
-Use /help for more.`
+Use /help for more.
+
+We appreciate feature requests and bug reports. Send em to @${admin}.
+
+<b>Dreams Out</b> <code>v${version}</code>`
 
   return message
 }

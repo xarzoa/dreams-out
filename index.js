@@ -29,10 +29,14 @@ startThings();
 
 bot.command('start', async (ctx) => {
   const user = await getUser(ctx.msg.from.id);
+  const botSettings = await getBotSettings();
   if (!user) {
     await createUser(ctx.msg.from.first_name, ctx.msg.from.id, 30);
   }
-  ctx.reply(start(ctx.msg.from.first_name), { parse_mode: 'HTML' });
+  ctx.reply(
+    start(ctx.msg.from.first_name, botSettings.admin, botSettings.version),
+    { parse_mode: 'HTML' }
+  );
 });
 
 bot.command('me', async (ctx) => {
@@ -97,7 +101,10 @@ async function sendFile(ctx) {
       bot.api.editMessageText(
         status.chat.id,
         status.message_id,
-        `${e.message}. Try again.`
+        `${e.message}. <b>Try again</b>.`,
+        {
+          parse_mode: 'HTML',
+        }
       );
     }
     return;
@@ -105,7 +112,7 @@ async function sendFile(ctx) {
   bot.api.editMessageText(
     status.chat.id,
     status.message_id,
-    '<b>Not enough credits.</b> To get credits use /refill',
+    "<b>Not enough credits.</b> /refill em. It's free.",
     {
       parse_mode: 'HTML',
     }
