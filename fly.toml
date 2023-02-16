@@ -1,11 +1,15 @@
-# fly.toml file generated for dreamsout on 2023-02-16T19:09:51+05:30
+# fly.toml file generated for dreamsout on 2023-02-16T19:13:36+05:30
 
 app = "dreamsout"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
+[build]
+  builder = "heroku/buildpacks:20"
+
 [env]
+  PORT = "8080"
 
 [experimental]
   auto_rollback = true
