@@ -9,7 +9,6 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - uses: superfly/flyctl-actions/setup-flyctl@master
-      steps:
         - id: add .env
           run: echo BOT_TOKEN=${{ secrets.BOT_TOKEN }} > .env
           run: echo DETA_KEY=${{ secrets.DETA_KEY }} >> .env
