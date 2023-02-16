@@ -66,7 +66,11 @@ bot.command('help', async (ctx) => {
   });
 });
 
-bot.on('message:text', async (ctx) => {
+bot.on('message:text', (ctx) => {
+  sendFile(ctx)
+});
+
+async function sendFile(ctx){
   const status = await ctx.reply('Generating...', {
     reply_to_message_id: ctx.message.message_id,
   });
@@ -104,7 +108,7 @@ bot.on('message:text', async (ctx) => {
       parse_mode: 'HTML',
     }
   );
-});
+}
 
 process.once("SIGINT", () => bot.stop());
 process.once("SIGTERM", () => bot.stop());
