@@ -2,7 +2,7 @@ function start(user, admin, version){
 
   const message = `Welcome, <b>${user}</b>!
 
-Me, the bot can turn your <b>Idea</b> to a <b>Picture.</b>.
+Me, the bot can turn your <b>Idea</b> to a <b>Picture</b>.
 
 Use /help for more.
 
