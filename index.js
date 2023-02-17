@@ -144,20 +144,20 @@ async function sendFile(ctx) {
     await createUser(ctx.msg.from.first_name, ctx.msg.from.id, 30);
   } else if (user.credits >= botSettings.charge) {
     try {
-      await generate(ctx.msg.text, botSettings.endPoints);
+      const fileName = await generate(ctx.msg.text, botSettings.endPoints);
       bot.api.sendChatAction(ctx.msg.chat.id, 'upload_photo');
       bot.api.editMessageText(status.chat.id, status.message_id, 'Generated.');
-      await ctx.replyWithPhoto(new InputFile(`./images/${ctx.msg.text}.jpeg`), {
+      await ctx.replyWithDocument(new InputFile(`./images/${fileName}.jpeg`), {
         reply_to_message_id: ctx.msg.message_id,
       });
       bot.api.deleteMessage(status.chat.id, status.message_id);
       await updateUser(ctx.msg.from.id, botSettings.charge);
       const file = await addImage(
-        `./${ctx.msg.from.id}/${ctx.msg.text}.jpeg`,
-        `./images/${ctx.msg.text}.jpeg`
+        `./${ctx.msg.from.id}/${fileName}.jpeg`,
+        `./images/${fileName}.jpeg`
       );
       await addPrompt(ctx.msg.text, file, botSettings.charge, ctx.msg.from.id);
-      deleteFile(`./images/${ctx.msg.text}.jpeg`);
+      deleteFile(`./images/${fileName}.jpeg`);
     } catch (e) {
       bot.api.editMessageText(
         status.chat.id,
