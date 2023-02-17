@@ -14,6 +14,6 @@ jobs:
         - id: adding_deta_env
           run: echo DETA_KEY=${{ secrets.DETA_KEY }} >> .env
         - id: stop_app
-          run: fly m stop
+          run: flyctl m stop
         - id: deploy
           run: flyctl deploy --remote-only --detach
