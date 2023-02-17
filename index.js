@@ -147,7 +147,7 @@ async function sendFile(ctx) {
       const fileName = await generate(ctx.msg.text, botSettings.endPoints);
       bot.api.sendChatAction(ctx.msg.chat.id, 'upload_photo');
       bot.api.editMessageText(status.chat.id, status.message_id, 'Generated.');
-      await ctx.replyWithDocument(new InputFile(`./images/${fileName}.jpeg`), {
+      await ctx.replyWithPhoto(new InputFile(`./images/${fileName}.jpeg`), {
         reply_to_message_id: ctx.msg.message_id,
       });
       bot.api.deleteMessage(status.chat.id, status.message_id);
