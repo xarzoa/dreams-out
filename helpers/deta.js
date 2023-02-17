@@ -39,9 +39,10 @@ async function getUser(id) {
 }
 
 async function addPrompt(prompt, imgPath, charged, id) {
+  const key = uuid();
   await prompts.put(
-    { prompt: prompt, img: imgPath, charged: charged },
-    `${id}`
+    { prompt: prompt, img: imgPath, charged: charged, user_id: id},
+    `${key}`
   );
 }
 
