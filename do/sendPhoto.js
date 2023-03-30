@@ -27,9 +27,13 @@ async function sendFile(ctx) {
       const fileName = await generate(ctx.msg.text, botSettings.endPoints);
       bot.api.sendChatAction(ctx.msg.chat.id, 'upload_photo');
       bot.api.editMessageText(status.chat.id, status.message_id, 'Generated.');
-      await ctx.replyWithPhoto(new InputFile(`./images/${fileName}.jpeg`), {
-        reply_to_message_id: ctx.msg.message_id,
-      }).catch(e => console.log(e.message))
+      try{
+        await ctx.replyWithPhoto(new InputFile(`./images/${fileName}.jpeg`), {
+          reply_to_message_id: ctx.msg.message_id,
+        })
+      }catch(e){
+        console.log(e.message)
+      }
       bot.api.deleteMessage(status.chat.id, status.message_id).catch(e => console.log(e.message))
       await updateUser(ctx.msg.from.id, botSettings.charge);
       const file = await addImage(
