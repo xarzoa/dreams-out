@@ -12,5 +12,5 @@ bot.command('help', async (ctx) => {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
     reply_markup: keyBoard,
-  });
+  }).catch(e => console.log(e.message))
 });

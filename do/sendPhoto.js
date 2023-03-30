@@ -29,8 +29,8 @@ async function sendFile(ctx) {
       bot.api.editMessageText(status.chat.id, status.message_id, 'Generated.');
       await ctx.replyWithPhoto(new InputFile(`./images/${fileName}.jpeg`), {
         reply_to_message_id: ctx.msg.message_id,
-      });
-      bot.api.deleteMessage(status.chat.id, status.message_id);
+      }).catch(e => console.log(e.message))
+      bot.api.deleteMessage(status.chat.id, status.message_id).catch(e => console.log(e.message))
       await updateUser(ctx.msg.from.id, botSettings.charge);
       const file = await addImage(
         `./${ctx.msg.from.id}/${fileName}.jpeg`,
@@ -46,7 +46,7 @@ async function sendFile(ctx) {
         {
           parse_mode: 'HTML',
         }
-      );
+      ).catch(e => console.log(e.message))
     }
     return;
   }
@@ -57,5 +57,5 @@ async function sendFile(ctx) {
     {
       parse_mode: 'HTML',
     }
-  );
+  ).catch(e => console.log(e.message))
 }

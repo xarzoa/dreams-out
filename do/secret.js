@@ -10,7 +10,7 @@ bot.command('secret', async (ctx) => {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
     reply_markup: keyBoard,
-  });
+  }).catch(e => console.log(e.message))
 });
 
 bot.callbackQuery('resetSecret', async (ctx) => {
@@ -23,5 +23,5 @@ bot.callbackQuery('resetSecret', async (ctx) => {
       parse_mode: 'HTML',
       reply_to_message_id: ctx.update.callback_query.message.message_id,
     }
-  );
+  ).catch(e => console.log(e.message))
 });

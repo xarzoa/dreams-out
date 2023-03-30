@@ -27,5 +27,5 @@ bot.command('me', async (ctx) => {
     parse_mode: 'HTML',
     reply_to_message_id: ctx.message.message_id,
     reply_markup: meKeyboard,
-  });
+  }).catch(e => console.log(e.message))
 });

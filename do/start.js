@@ -16,5 +16,5 @@ bot.command('start', async (ctx) => {
   ctx.reply(
     start(ctx.msg.from.first_name, botSettings.admin, botSettings.version),
     { parse_mode: 'HTML', reply_markup: keyBoard }
-  );
+  ).catch(e => console.log(e.message))
 });
