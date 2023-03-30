@@ -17,12 +17,12 @@ bot.on('message:text', (ctx) => {
 async function sendFile(ctx) {
   const status = await ctx.reply('Generating...', {
     reply_to_message_id: ctx.message.message_id,
-  });
+  }).catch(e => console.log(e.message))
   const botSettings = await getBotSettings();
   const user = await getUser(ctx.msg.from.id);
   if (!user) {
     await createUser(ctx.msg.from.first_name, ctx.msg.from.id, 30);
-  } else if (user.credits >= botSettings.charge) {
+  } else if (user.credits >= botSettings.charge && status) {
     try {
       const fileName = await generate(ctx.msg.text, botSettings.endPoints);
       bot.api.sendChatAction(ctx.msg.chat.id, 'upload_photo');
