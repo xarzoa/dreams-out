@@ -20,46 +20,52 @@ async function sendFile(ctx) {
   }).catch(e => console.log(e.message))
   const botSettings = await getBotSettings();
   const user = await getUser(ctx.msg.from.id);
-  if (!user) {
-    await createUser(ctx.msg.from.first_name, ctx.msg.from.id, 30);
-  } else if (user.credits >= botSettings.charge && status) {
-    try {
-      const fileName = await generate(ctx.msg.text, botSettings.endPoints);
-      bot.api.sendChatAction(ctx.msg.chat.id, 'upload_photo');
-      bot.api.editMessageText(status.chat.id, status.message_id, 'Generated.');
-      try{
-        await ctx.replyWithPhoto(new InputFile(`./images/${fileName}.jpeg`), {
-          reply_to_message_id: ctx.msg.message_id,
-        })
-      }catch(e){
-        console.log(e.message)
-      }
-      bot.api.deleteMessage(status.chat.id, status.message_id).catch(e => console.log(e.message))
-      await updateUser(ctx.msg.from.id, botSettings.charge);
-      const file = await addImage(
-        `./${ctx.msg.from.id}/${fileName}.jpeg`,
-        `./images/${fileName}.jpeg`
-      );
-      await addPrompt(ctx.msg.text, file, botSettings.charge, ctx.msg.from.id);
-      deleteFile(`./images/${fileName}.jpeg`);
-    } catch (e) {
-      bot.api.editMessageText(
-        status.chat.id,
-        status.message_id,
-        `${e.message}. <b>Try again</b>.`,
-        {
-          parse_mode: 'HTML',
+  if(status){
+    if (!user) {
+      await createUser(ctx.msg.from.first_name, ctx.msg.from.id, 30);
+    } else if (user.credits >= botSettings.charge) {
+      try {
+        const fileName = await generate(ctx.msg.text, botSettings.endPoints);
+        bot.api.sendChatAction(ctx.msg.chat.id, 'upload_photo');
+        bot.api.editMessageText(status.chat.id, status.message_id, 'Generated.');
+        try{
+          await ctx.replyWithPhoto(new InputFile(`./images/${fileName}.jpeg`), {
+            reply_to_message_id: ctx.msg.message_id,
+          })
+        }catch(e){
+          console.log(e.message)
         }
-      ).catch(e => console.log(e.message))
+        bot.api.deleteMessage(status.chat.id, status.message_id).catch(e => console.log(e.message))
+        await updateUser(ctx.msg.from.id, botSettings.charge);
+        const file = await addImage(
+          `./${ctx.msg.from.id}/${fileName}.jpeg`,
+          `./images/${fileName}.jpeg`
+        );
+        await addPrompt(ctx.msg.text, file, botSettings.charge, ctx.msg.from.id);
+        deleteFile(`./images/${fileName}.jpeg`);
+      } catch (e) {
+        bot.api.editMessageText(
+          status.chat.id,
+          status.message_id,
+          `${e.message}. <b>Try again</b>.`,
+          {
+            parse_mode: 'HTML',
+          }
+        ).catch(e => console.log(e.message))
+      }
+      return;
     }
-    return;
+    bot.api.editMessageText(
+      status.chat.id,
+      status.message_id,
+      "<b>Not enough credits.</b> /refill em. It's free.",
+      {
+        parse_mode: 'HTML',
+      }
+    ).catch(e => console.log(e.message))
+  }else{
+    await ctx.reply('Something went wrong!', {
+      reply_to_message_id: ctx.message.message_id,
+    }).catch(e => console.log(e.message))
   }
-  bot.api.editMessageText(
-    status.chat.id,
-    status.message_id,
-    "<b>Not enough credits.</b> /refill em. It's free.",
-    {
-      parse_mode: 'HTML',
-    }
-  ).catch(e => console.log(e.message))
 }
