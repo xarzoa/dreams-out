@@ -1,6 +1,7 @@
 const { bot } = require('../helpers/bot');
 const { getUser, resetSecret } = require('../helpers/db');
 const { InlineKeyboard } = require('grammy');
+const { secret } = require('../helpers/messages');
 
 bot.command('secret', async (ctx) => {
   const user = await getUser(ctx.message.from.id);
