@@ -6,7 +6,7 @@ const { help } = require('../helpers/messages');
 bot.command('help', async (ctx) => {
   const botSettings = await getBotSettings();
   let keyBoard = new InlineKeyboard()
-    .url('Bug reports', `tg://resolve?domain=${botSettings.support}`)
+    .url('Bug reports', `${botSettings.support}`)
     .url('Help', `${botSettings.channel}`);
   ctx.reply(help(botSettings.support), {
     parse_mode: 'HTML',
