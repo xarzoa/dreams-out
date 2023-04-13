@@ -26,13 +26,13 @@ Last checked at ${lastChecked}
   return message;
 }
 
-function refill(charge, admin) {
+function refill(charge, group) {
   const message = `
 <b>Refill guide</b>,
 
 You can't buy credits rn. Also we don't want to sell them rn. We added them to prevent abusing <b>free service</b>.
 
-You can contact @${admin} for credit refill.
+You can contact ${group} for credit refill.
 
 <code>${charge} credit(s) = Image</code>
 `;
