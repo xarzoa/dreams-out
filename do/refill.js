@@ -7,7 +7,7 @@ bot.command('refill', async (ctx) => {
   const botSettings = await getBotSettings();
   let keyBoard = new InlineKeyboard().url(
     'Contact',
-    `tg://resolve?domain=${botSettings.refill}`
+    `${botSettings.refill}`
   );
   ctx.reply(refill(botSettings.charge, botSettings.refill), {
     parse_mode: 'HTML',
